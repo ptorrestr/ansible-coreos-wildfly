@@ -34,16 +34,17 @@
   tags:
     - configuration
 
+# We don't deploy wildfly alone
 # Submit units to fleet
-- name: Submit Wildfly units
-  shell: fleetctl --tunnel {{ fleet_endpoint }} submit {{ playbook_dir }}/units/wildfly.1.service
-  tags:
-    - fleet
-    - fleet_submit
+#- name: Submit Wildfly units
+#  shell: fleetctl --tunnel {{ fleet_endpoint }} submit {{ playbook_dir }}/units/wildfly.1.service
+#  tags:
+#    - fleet
+#    - fleet_submit
 
 # Start units via fleet
-- name: Start Wildfly units
-  shell: sleep 5 && fleetctl --tunnel {{ fleet_endpoint }} start {{ playbook_dir }}/units/wildfly.1.service
-  tags:
-    - fleet
-    - fleet_start
+#- name: Start Wildfly units
+#  shell: sleep 5 && fleetctl --tunnel {{ fleet_endpoint }} start {{ playbook_dir }}/units/wildfly.1.service
+#  tags:
+#    - fleet
+#    - fleet_start
