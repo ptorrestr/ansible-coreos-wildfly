@@ -7,7 +7,7 @@ MAINTAINER Pablo Torres <pablo.torres.t@gmail.com>
 # Get default jdk
 RUN apt-get clean
 RUN apt-get update -y
-RUN apt-get install -y default-jdk maven git subversion wget sed unzip curl
+RUN apt-get install -y default-jdk maven git subversion wget sed unzip curl bzip2
 
 # Add jboss user
 RUN groupadd -r jboss -g 1000 && useradd -u 1000 -r -g jboss -m -d /opt/jboss -s /sbin/nologin -c "JBoss user" jboss
