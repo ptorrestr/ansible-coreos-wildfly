@@ -1,0 +1,49 @@
+---
+# Create docker directory
+- name: Create docker directory
+  file: path={{ playbook_dir }}/docker/docker-wildfly state=directory
+  tags:
+    - configuration
+  
+# Build and push image
+- name: Create Wildfly Dockerfile
+  template: src=wildfly-dockerfile.j2 dest={{ playbook_dir }}/docker/docker-wildfly/Dockerfile
+  tags:
+    - configuration
+
+- name: Build Wildfly image
+  docker_image: docker_url=tcp://127.0.0.1:2375 path="{{ playbook_dir }}/docker/docker-wildfly" name="{{ wildfly_image_name }}" state="build"
+  tags:
+    - docker
+    - docker_build
+
+- name: Push Wildfly image to repo
+  shell: "docker push {{ wildfly_image_name }}"
+  tags:
+    - docker
+    - docker_push
+
+# Create required fleet unit files
+- name: Create Units directory
+  file: path={{ playbook_dir }}/units state=directory
+  tags:
+    - configuration
+
+- name: Create Wildfly Units
+  template: src=wildfly.x.service.j2 dest={{ playbook_dir }}/units/wildfly.1.service
+  tags:
+    - configuration
+
+# Submit units to fleet
+- name: Submit Wildfly units
+  shell: fleetctl --tunnel {{ fleet_endpoint }} submit {{ playbook_dir }}/units/wildfly.1.service
+  tags:
+    - fleet
+    - fleet_submit
+
+# Start units via fleet
+- name: Start Wildfly units
+  shell: sleep 5 && fleetctl --tunnel {{ fleet_endpoint }} start {{ playbook_dir }}/units/wildfly.1.service
+  tags:
+    - fleet
+    - fleet_start
