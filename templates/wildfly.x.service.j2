@@ -3,7 +3,7 @@ Description=Wildfly service
 
 [Service]
 EnvironmentFile=/etc/environment
-ExecStart=/bin/bash -c "/usr/bin/docker run --rm --net=\"host\" --name wildfly -p 8080:8080 -p 9990:9990 {{ wildfly_image_name }}"
+ExecStart=/bin/bash -c "/usr/bin/docker run --rm --net=\"host\" --name wildfly -v /opt:/opt -p 8080:8080 -p 9990:9990 {{ wildfly_image_name }}"
 ExecStop=/usr/bin/docker rm -f wildfly
 
 [X-Fleet]
